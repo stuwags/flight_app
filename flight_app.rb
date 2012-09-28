@@ -3,8 +3,6 @@ require 'prawn'
 require 'pony'
 # require 'hash'
 
-request2 = {}
-
 request = {
   :itinerary => {
     :leave => {
@@ -48,11 +46,10 @@ request = {
 }
 
 class TravelRequest
+  include 
 
-  def initialize(info)
-    @info = info
-    info[:depart_city]
-    @request = info
+  def initialize(request)
+    @request = request
   end
 
   def enter_travel_plan
@@ -78,14 +75,36 @@ class TravelRequest
 
   end
 
-  def print()
+# Prawn > Document
+
+# module Prawn
+#   class Document
+#     def generate
+      
+#     end
+#   end
+# end
+
+  def print
+    Prawn::Document.generate(@request[:user][:name] + ' invoice.pdf') do |pdf| 
+    pdf.text("Congratulations on your purchase!" + "\n" + "Your price was " + @request[:po][:price].to_s) 
+end
   end
 
   def email()
   end
 
+  def charge
+    Stripe.api_key = "vtUQeOtUnYr7PGCLQ96Ul4zqpDUO4sOE"
+    Stripe::Charge.create(
+    :amount => (@request[:po][:price]*100),
+    :currency => "usd",
+    :card => "tok_jOq0M8vJprCUUU", # obtained with Stripe.js
+    :description => "Charge for test@example.com"
+  )
+  end
 end
 
 
 request1 = TravelRequest.new(request)
-request1.enter_travel_plan
+request1.print
