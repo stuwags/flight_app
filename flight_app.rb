@@ -1,102 +1,44 @@
 require 'stripe'
 require 'prawn'
 require 'pony'
+# require 'hash'
 
-class TravelRequest
-
-  def initialize(request)
-    @request = request
-
-  end
-
-  def enter_travel_plan
-    @itinerary[:dest] = gets.chomp
-    gets.chomp
-  end
-
-
-  def print()
-  end
-
-  def email()
-  end
-
-  def give_me_the_request()
-    return @request
-
-    tmp = AnotherClass.new
-
-    tmp.some_method(@request)
-  end
-
-  def self.hello()
-  end
-
-end
-
-request[itinerary][departing_flight][flight_d]
+request2 = {}
 
 request = {
   :itinerary => {
     :leave => {
       :depart_data => {
-        :location => {
-          :city => "Detroit",
-          :state => "Michigan",
-          :airport => "DTW"
-        }
-        :schedule => {
-          :date => "9/26/2012",
-          :time => "1800"
-        }
-      }
+        :airport => "DTW",
+        :date => "9/26/2012",
+        :time => "1800"
+      },
       :arrive_data => {
-        :location => {
-          :city => "Miami",
-          :state => "Florida",
-          :airport => "MIA"
-        }
-        :schedule => {
-          :date => "9/26/2012",
-          :time => "2100"
-        }
+        :airport => "MIA",
+        :date => "9/26/2012",
+        :time => "2100"
       }
-    }
+    },
     :return => {
       :depart_data => {
-        :location => {
-          :city => "Miami",
-          :state => "Florida",
-          :airport => "MIA"
-        }
-        :schedule => {
-          :date => "9/28/2012",
-          :time => "1800"
-        }
-      }
+        :airport => "MIA",
+        :date => "9/28/2012",
+        :time => "1800"
+      },
       :arrive_data => {
-        :location => {
-          :city => "Detroit",
-          :state => "Michigan",
-          :airport => "DTW"
-        }
-        :schedule => {
-          :date => "9/28/2012",
-          :time => "2100"
-        }
+        :airport => "DTW",
+        :date => "9/28/2012",
+        :time => "2100"
       }
     }
-  }
+  },
   :po => {
     :price => 300,
-    :time => time.current
-  }
+    :time => Time.now
+  },
   :user => {
-    :name => {
-      :first => "John",
-      :last => "Bernstein"
-    }
-    :email => "stuwags@gmail.com"
+    :name => "John Bernstein",
+    :email => "stuwags@gmail.com",
     :cc => {
       :number => "424242424242",
       :CVC => "424",
@@ -105,35 +47,45 @@ request = {
   }
 }
 
-travel_info = TravelInfo.new(request)
-travel_info2 = TravelInfo.new(request)
-travel_info3 = TravelInfo.new(request)
+class TravelRequest
 
-request[:itinerary][:dest]
-request[po][:price]
-request[confirmation][:paid] (true/false)
-
-
-
-
-
-
-
-
-
-TravelInfo.hello()
-
-
-Dir.pwd()
-
-
-class Dir
-  def self.pwd()
-    @hello = "lasjdf"
+  def initialize(info)
+    @info = info
+    info[:depart_city]
+    @request = info
   end
+
+  def enter_travel_plan
+    puts "Please give flight Departing Airport, date (9/28/2012), and time (2100)"
+    @request[:itinerary][:leave][:depart_data][:airport] = gets.chomp 
+    @request[:itinerary][:leave][:depart_data][:date] = gets.chomp
+    @request[:itinerary][:leave][:depart_data][:time] = gets.chomp
+
+    puts "Please give your flight Arriving Airport, date (9/28/2012), and time (2100)"
+    @request[:itinerary][:leave][:arrive_data][:airport] = gets.chomp
+    @request[:itinerary][:leave][:arrive_data][:date] = gets.chomp
+    @request[:itinerary][:leave][:arrive_data][:time] = gets.chomp
+
+    puts "Please give your return flight depart date and time"
+    @request[:itinerary][:return][:depart_data][:airport] = @request[:itinerary][:leave][:arrive_data][:airport]
+    @request[:itinerary][:return][:depart_data][:date] = gets.chomp
+    @request[:itinerary][:return][:depart_data][:time] = gets.chomp
+
+    puts "Please give your return flight arrive date and time"
+    @request[:itinerary][:return][:arrive_data][:airport] = @request[:itinerary][:leave][:depart_data][:airport]
+    @request[:itinerary][:return][:arrive_data][:date] = gets.chomp
+    @request[:itinerary][:return][:arrive_data][:time] = gets.chomp
+
+  end
+
+  def print()
+  end
+
+  def email()
+  end
+
 end
 
 
-
-
-
+request1 = TravelRequest.new(request)
+request1.enter_travel_plan
